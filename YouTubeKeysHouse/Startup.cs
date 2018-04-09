@@ -4,10 +4,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Swashbuckle.AspNetCore.Swagger;
+using YouTubeKeysHouse.Models;
 
 namespace YouTubeKeysHouse
 {
@@ -24,6 +27,12 @@ namespace YouTubeKeysHouse
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            services.AddDbContext<TripsEraDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("TripsEraDataBase")));
+            services.AddSwaggerGen(
+                c => {
+                    c.SwaggerDoc("V1", new Info { Title="YouTubeDataHouse Apis" ,Version="V1"});
+                }
+                );
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -33,8 +42,14 @@ namespace YouTubeKeysHouse
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseSwagger();
+            app.UseSwaggerUI( c =>
+                {
+                    c.SwaggerEndpoint("/Swagger/V1/Swagger.json", "YouTubeDataHouse V1");
+                });
 
             app.UseMvc();
+
         }
     }
 }
