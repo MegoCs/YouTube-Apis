@@ -14,6 +14,7 @@ using YouTubeKeysHouse.Models;
 
 namespace YouTubeKeysHouse
 {
+  
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -33,6 +34,12 @@ namespace YouTubeKeysHouse
                     c.SwaggerDoc("V1", new Info { Title="YouTubeDataHouse Apis" ,Version="V1"});
                 }
                 );
+            services.AddCors(o => o.AddPolicy("MyPolicy", builder =>
+            {
+                builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+            }));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -49,6 +56,7 @@ namespace YouTubeKeysHouse
                 });
 
             app.UseMvc();
+            app.UseCors("MyPolicy");
 
         }
     }

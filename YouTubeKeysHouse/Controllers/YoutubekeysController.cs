@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,7 @@ namespace YouTubeKeysHouse.Controllers
 {
     [Produces("application/json")]
     [Route("api/[Controller]")]
+    [EnableCors("MyPolicy")]
     public class YoutubekeysController : Controller
     {
         private readonly TripsEraDbContext _context;
